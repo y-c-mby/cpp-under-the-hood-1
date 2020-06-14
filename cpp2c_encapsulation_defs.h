@@ -34,7 +34,7 @@ struct b{
         double length;
         double width;
         double height;
-};
+}b;
 typedef struct b box;
 typedef box* boxptr;
 void box_init_ddd(boxptr b, double length, double width, double highet);
@@ -78,7 +78,8 @@ typedef struct s shelf;
 typedef const shelf* shelfptr;
 void shelf_print_C(shelfptr s);
 double shelf_get_volume_C();
-shelfptr shelf_get_box(shelfptr s , int index);
+boxptr shelf_get_box(shelfptr s , int index);
+void shelf_set_box(shelfptr s, int index, const boxptr dim);
 int shelf_get_num_books(shelfptr s);
 //inline Box& Shelf::getBox(int index)
 //{

@@ -35,11 +35,11 @@ double box_get_volume_C(const boxptr b)
 {
     return b->width * b->length * b->height;
 }
-box g_mult_box_d(const boxptr box, double mult){
-    box ans;
-    box_init_d(ans);
-    box_mult_eq_d(box,mult);
-    return box;
+box g_mult_box_d(const boxptr b, double mult){
+    box ans=*b;
+//    box_init_d(ans);
+    box_mult_eq_d(&ans,mult);
+    return ans;
 }
 box g_mult_d_box(double mult,const boxptr box){
     return g_mult_box_d(box,mult);
@@ -68,7 +68,7 @@ void box_print_vC(const boxptr const b){
 
 //const char* const Shelf::DEF_MSG = "The total volume held on the shelf is";
 //const char* Shelf::message = Shelf::DEF_MSG;
-shelfptr shelf_get_box(shelfptr s , int index){
+boxptr shelf_get_box(shelfptr s , int index){
     return s->boxes[index];
 }
 int shelf_get_num_books(shelfptr s){
@@ -79,6 +79,9 @@ int shelf_get_num_books(shelfptr s){
 //{
 //    boxes[index] = dims;
 //}
+void shelf_set_box(shelfptr s, int index, const boxptr dim){
+    s->boxes[index] = dim;
+}
 void shelf_print_C(shelfptr s){
     printf("%s %f\n","fdf",shelf_get_volume_C(s));
 }

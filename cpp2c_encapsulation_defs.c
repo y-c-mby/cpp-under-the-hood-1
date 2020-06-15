@@ -1,111 +1,57 @@
 #include <stdio.h>
 #include "cpp2c_encapsulation_defs.h"
+const char* def_msg = "The total volume held on the shelf is";
+const char* message ="The total volume held on the shelf is";
+////////// Box ////////////
 
-//// Box ////////////
-
-
-void box_init_ddd(boxptr b, double length, double width, double highet){
-    b->length =length;
-    b->height = highet;
-    b->width =width;
-    box_print_vC(b);
+void box_init_ddd(boxptr this, double length, double width, double highet){
+    this->length =length;
+    this->height = highet;
+   this->width =width;
+    box_print_vC(this);
 
 }
-void box_init_d(boxptr b, double dim){
-    b->length =dim;
-    b->height = dim;
-    b->width =dim;
-    box_print_vC(b);
+void box_init_d(boxptr this, double dim){
+   this->length =dim;
+    this->height = dim;
+    this->width =dim;
+    box_print_vC(this);
 }
-//inline//double  box_get_width_C(const boxptr b)
-//{
-//    return b->width;
-//}
-//
-//double  box_get_length_C(const boxptr b)
-//{
-//    return b->length;
-//}
-//
-//double  box_get_height_C(const boxptr b)
-//{
-//    return b->height;
-//}
-double box_get_volume_C(const boxptr b)
+
+double box_get_volume_C(const boxptr this)
 {
-    return b->width * b->length * b->height;
+    return this->width * this->length * this->height;
 }
-box g_mult_box_d(const boxptr b, double mult){
-    box ans=*b;
-//    box_init_d(ans);
-    box_mult_eq_d(&ans,mult);
-    return ans;
+void box_destroy(const boxptr this){
+    printf("Box destructor, %f x %f x %f\n", this->width,this-> height,this-> length);
 }
-box g_mult_d_box(double mult,const boxptr box){
-    return g_mult_box_d(box,mult);
+
+boxptr box_mult_eq_d(boxptr this , double mult){
+    this->width *=mult;
+    this->length *=mult;
+    this->height*=mult;
+    return this;
 }
-bool g_eq_box_box(const boxptr lhs ,  const boxptr rhs){
-    return (lhs->width==rhs->width) && (lhs->height == rhs->height) && (lhs->length==rhs->length);
-}
-bool g_neq_box_box(const boxptr lhs ,  const boxptr rhs){
-    return !g_eq_box_box(lhs,rhs);
-}
-//Box::~Box()
-//{
-//    std::printf("Box destructor, %f x %f x %f\n", width, height, length);
-//}
-boxptr box_mult_eq_d(boxptr b , double mult){
-    b->width *=mult;
-    b->length *=mult;
-    b->height*=mult;
-    return b;
-}
-void box_print_vC(const boxptr const b){
-    printf("Box: %f x %f x %f\n", b->length,b->width, b->height);
+void box_print_vC(const boxptr const this){
+    printf("Box: %f x %f x %f\n", this->length,this->width, this->height);
 }
 
 //// Shelf ////////////
 
 //const char* const Shelf::DEF_MSG = "The total volume held on the shelf is";
 //const char* Shelf::message = Shelf::DEF_MSG;
-boxptr shelf_get_box(shelfptr s , int index){
-    return s->boxes[index];
-}
-int shelf_get_num_books(shelfptr s){
-    return NUM_BOXES;
-}
-
-//void Shelf::setBox(int index, const Box& dims)
-//{
-//    boxes[index] = dims;
-//}
-void shelf_set_box(shelfptr s, int index, const boxptr dim){
-    s->boxes[index] = dim;
+void shelf_set_box(shelfptr this, int index, const box dim){
+    this->boxes[index] = dim;
 }
 void shelf_print_C(shelfptr s){
-    printf("%s %f\n","fdf",shelf_get_volume_C(s));
+    printf("%s %f\n",message,shelf_get_volume_C(s));
 }
-double shelf_get_volume_C(shelfptr s){
+double shelf_get_volume_C(shelfptr this){
     double vol = 0;
     for (size_t i = 0; i < NUM_BOXES; ++i)
-        vol += box_get_volume_C(s->boxes[i]);
-
+        vol += box_get_volume_C(&(this->boxes[i]));
     return vol;
 }
-
-//double Shelf::getVolume() const
-//{
-//    double vol = 0;
-//    for (size_t i = 0; i < NUM_BOXES; ++i)
-//        vol += boxes[i].getVolume();
-//
-//    return vol;
-//}
-//
-//void Shelf::print() const
-//{
-//    std::printf("%s %f\n", message, getVolume());
-//}
 
 
 
